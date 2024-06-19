@@ -1,4 +1,9 @@
 import { Nicifiable } from "@stackframe/stack-shared/dist/utils/strings";
+// eslint-disable-next-line no-restricted-imports
+import { test as vitestTest } from "vitest";
+
+export const test: typeof vitestTest = vitestTest.extend({});
+export const it: typeof vitestTest = test;
 
 function getEnvVar(name: string): string {
   const value = process.env[name];
@@ -7,7 +12,6 @@ function getEnvVar(name: string): string {
   }
   return value;
 }
-
 
 export class NiceResponse implements Nicifiable {
   constructor(
@@ -18,7 +22,7 @@ export class NiceResponse implements Nicifiable {
 
   getNicifiableKeys(): string[] {
     // reorder the keys for nicer printing
-    return ["status", "headers", "body"];
+    return ["status", "body", "headers"];
   }
 };
 
@@ -39,3 +43,5 @@ export const DASHBOARD_BASE_URL = getEnvVar("DASHBOARD_BASE_URL");
 export const BACKEND_BASE_URL = getEnvVar("BACKEND_BASE_URL");
 export const INTERNAL_PROJECT_ID = getEnvVar("INTERNAL_PROJECT_ID");
 export const INTERNAL_PROJECT_CLIENT_KEY = getEnvVar("INTERNAL_PROJECT_CLIENT_KEY");
+export const INTERNAL_PROJECT_SERVER_KEY = getEnvVar("INTERNAL_PROJECT_SERVER_KEY");
+export const INTERNAL_PROJECT_ADMIN_KEY = getEnvVar("INTERNAL_PROJECT_ADMIN_KEY");

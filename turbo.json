@@ -36,12 +36,6 @@
     "typecheck": {
       "cache": false
     },
-    "test": {
-      "cache": false
-    },
-    "test:watch": {
-      "cache": false
-    },
     "generate-docs": {
       "cache": false
     },
