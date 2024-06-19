@@ -9,7 +9,7 @@ describe("without project ID", () => {
       NiceResponse {
         "status": 200,
         "body": "Welcome to the Stack API endpoint! Please refer to the documentation at https://docs.stack-auth.com.\\n\\nAuthentication: None",
-        "headers": _Headers {
+        "headers": Headers {
           "x-stack-request-id": <stripped header 'x-stack-request-id'>,
           <some headers may have been hidden>,
         },
