@@ -1,3 +1,4 @@
+import { generateSecureRandomString } from "@stackframe/stack-shared/dist/utils/crypto";
 import { Nicifiable } from "@stackframe/stack-shared/dist/utils/strings";
 // eslint-disable-next-line no-restricted-imports
 import { test as vitestTest } from "vitest";
@@ -39,9 +40,41 @@ export async function niceFetch(url: string | URL, options?: RequestInit): Promi
   return new NiceResponse(fetchRes.status, fetchRes.headers, body);
 }
 
+
+class MailboxMessage {
+  constructor(json: any) {
+    Object.assign(this, json);
+  }
+
+  getSnapshotSerializerOptions() {
+    return ({
+      stripFields: [
+        "date",
+        "posix-millis",
+        "mailbox",
+        "to",
+        "id",
+      ],
+    });
+  };
+}
+
+export function createMailbox(): { emailAddress: string, fetchMessages: () => Promise<MailboxMessage[]> } {
+  const mailboxName = generateSecureRandomString();
+  return {
+    emailAddress: `${mailboxName}@stack-test.example.com`,
+    async fetchMessages() {
+      const res = await niceFetch(new URL(`/api/v1/mailbox/${encodeURIComponent(mailboxName)}`, INBUCKET_API_URL));
+      return (res.body as any[]).map((message) => new MailboxMessage(message));
+    },
+  };
+}
+
 export const DASHBOARD_BASE_URL = getEnvVar("DASHBOARD_BASE_URL");
 export const BACKEND_BASE_URL = getEnvVar("BACKEND_BASE_URL");
 export const INTERNAL_PROJECT_ID = getEnvVar("INTERNAL_PROJECT_ID");
 export const INTERNAL_PROJECT_CLIENT_KEY = getEnvVar("INTERNAL_PROJECT_CLIENT_KEY");
 export const INTERNAL_PROJECT_SERVER_KEY = getEnvVar("INTERNAL_PROJECT_SERVER_KEY");
 export const INTERNAL_PROJECT_ADMIN_KEY = getEnvVar("INTERNAL_PROJECT_ADMIN_KEY");
+
+export const INBUCKET_API_URL = getEnvVar("INBUCKET_API_URL");
